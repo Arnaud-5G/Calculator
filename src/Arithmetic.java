@@ -6,29 +6,25 @@ public class Arithmetic extends Calculator {
         _equation.setMode(Equation.Mode.ARITHMETIC);
     }
 
-    public void calculate(){
+    public void calculate() {
         String equation = _equation.getEquation();
 
         if(Pattern.compile("[x/]").matcher(equation).find(0)) operations(equation);
     }
-    
-    private String operations(String equation){
+
+    private void operations(String equation) {
         String[] operation = equation.split("[x/]", 2);
 
-        int num1 = Integer.valueOf(operation[0].split("[x/+-/r/n]")[operation[0].split("[x/+-/r/n]").length-1]);
-        int num2 = Integer.valueOf(operation[1].split("[x/+-/r/n]", 2)[0]);
+        int num1 = Integer.parseInt(operation[0].split("[x/+-/rn]")[operation[0].split("[x/+-/rn]").length - 1]);
+        int num2 = Integer.parseInt(operation[1].split("[x/+-/rn]", 2)[0]);
 
-        int result;
+        int result = switch(equation.charAt(operation[0].length())) {
+            case 'x' -> num1 * num2;
+            case '/' -> num1 / num2;
+            default -> 0;
+        };
 
-        
-        switch(equation.charAt(operation[0].length())){
-            case 'x' : result = num1 * num2; break;
-            case '/' : result = num1 / num2; break;
-            default  : result = 0; break;
-        }
-        
-        System.out.println(operation[0].substring(0, operation[0].lastIndexOf(operation[0].split("[x/+-/r/n]")[operation[0].split("[x/+-/r/n]").length-1])) + result + operation[1].substring(operation[1].indexOf(operation[1].split("[x/+-/r/n]", 2)[0])+1));
-        
-        return null;
+        System.out.println(operation[0].substring(0, operation[0].lastIndexOf(operation[0].split("[x/+-/rn]")[operation[0].split("[x/+-/rn]").length - 1]))
+            + result + operation[1].substring(operation[1].indexOf(operation[1].split("[x/+-/rn]", 2)[0]) + 1));
     }
 }

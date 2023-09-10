@@ -2,20 +2,24 @@ public class Equation {
     private final String _equation;
     private Mode _mode;
 
-    public static enum Mode{
+    public enum Mode {
         ARITHMETIC,
         ALGEBRAIC
     }
 
-    Equation(String equation){
+    Equation(String equation) {
         _equation = equation;
     }
 
-    public String getEquation(){
+    public String getEquation() {
         return _equation;
     }
 
-    public void setMode(Mode mode){
-        _mode = mode;
+    public void setMode(Mode mode) {
+        this._mode = mode;
+    }
+
+    public Mode getMode() {
+        return _mode;
     }
 }
