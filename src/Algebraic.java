@@ -1,10 +1,24 @@
-public class Algebraic extends Arithmetic {
-    Algebraic(Equation equation) {
-        super(equation);
-        _equation.setMode(Equation.Mode.ALGEBRAIC);
+/***
+ * Used to create an {@code Algebraic Calculator}.
+ */
+public class Algebraic extends Arithmetic{
+
+    /***
+     * The constructor for the {@code Algebraic} class.
+     * <p>
+     * Calls the {@code setMode()} method to set the expression's mode to {@code ALGEBRAIC}.
+     * 
+     * @param expression
+     */
+    Algebraic(Expression expression){
+        super(expression);
+        _expression.setMode(Expression.Mode.ALGEBRAIC);
     }
 
-    public void calculate() {
+    /***
+     * The {@code calculate()} method is used to calculate.
+     */
+    public void calculate(){
 
     }
 }

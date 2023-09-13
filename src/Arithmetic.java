@@ -1,30 +1,74 @@
 import java.util.regex.Pattern;
 
+/***
+ * Used to create an {@code Arithmetic Calculator}.
+ */
 public class Arithmetic extends Calculator {
-    Arithmetic(Equation equation) {
-        super(equation);
-        _equation.setMode(Equation.Mode.ARITHMETIC);
+    private final String regexString = "[*/+-]";
+
+    /***
+     * The constructor for the {@code Arithmetic} class.
+     * <p>
+     * Calls the {@code setMode()} method to set the expression's mode to {@code ARITHMETIC}.
+     * 
+     * @param expression
+     */
+    Arithmetic(Expression expression) {
+        super(expression);
+        _expression.setMode(Expression.Mode.ARITHMETIC);
     }
 
-    public void calculate() {
-        String equation = _equation.getEquation();
+    /***
+     * The {@code calculate()} method is used to calculate.
+     */
+    public void calculate(){
+        // gets the expression from the Expression class
+        String expression = _expression.getEquation();
 
-        if(Pattern.compile("[x/]").matcher(equation).find(0)) operations(equation);
+        // calls getPriorities()
+        getPriorities(expression);
     }
 
-    private void operations(String equation) {
-        String[] operation = equation.split("[x/]", 2);
+    private String getPriorities(String expression){
+        System.out.println(expression);
 
-        int num1 = Integer.parseInt(operation[0].split("[x/+-/rn]")[operation[0].split("[x/+-/rn]").length - 1]);
-        int num2 = Integer.parseInt(operation[1].split("[x/+-/rn]", 2)[0]);
+        // checks for operators
+        while(Pattern.compile("[\\^]").matcher(expression).find()){ expression = operations(expression, "^"); System.out.println(expression); }
+        while(Pattern.compile("[*/]").matcher(expression).find()){ expression = operations(expression, "*/"); System.out.println(expression); }
+        while(Pattern.compile("[+-]").matcher(expression).find()){ expression = operations(expression, "+-"); System.out.println(expression); }
+        
+        // returns the expression
+        return expression;
+    }
+    
+    private String operations(String expression, String operators){
+        // instanciates the vars
+        String[] operation;
 
-        int result = switch(equation.charAt(operation[0].length())) {
-            case 'x' -> num1 * num2;
+        double num1;
+        double num2;
+        double result;
+
+        // splits the expression
+        operation = expression.split("[" + operators.replace("^", "\\^") + "]", 2);
+        
+        // gets the two numbers to use in the operation
+        num1 = Double.parseDouble(operation[0].split(regexString)[operation[0].split(regexString).length-1]);
+        num2 = Double.parseDouble(operation[1].split(regexString, 2)[0]);
+
+        // makes the appropriate operation
+        result = switch(expression.charAt(operation[0].length())){
+            case '^' -> Math.pow(num1, (num2 < 0 ? 1/-num2 : num2));
+            case '*' -> num1 * num2;
             case '/' -> num1 / num2;
-            default -> 0;
+            case '+' -> num1 + num2;
+            case '-' -> num1 - num2;
+            default  -> throw new UnknownError();
         };
 
-        System.out.println(operation[0].substring(0, operation[0].lastIndexOf(operation[0].split("[x/+-/rn]")[operation[0].split("[x/+-/rn]").length - 1]))
-            + result + operation[1].substring(operation[1].indexOf(operation[1].split("[x/+-/rn]", 2)[0]) + 1));
+        // returns the result imbeded in the expression
+        return operation[0].substring(0, operation[0].lastIndexOf(operation[0].split(regexString)[operation[0].split(regexString).length-1])) + // gets the first half of the expression
+        String.valueOf(result) + // returns the result as a String
+        (operation[1].split(regexString).length > 1 ? operation[1].substring(operation[1].indexOf(operation[1].split(regexString, 2)[1])-1) : ""); // gets the second half of the expression
     }
 }
