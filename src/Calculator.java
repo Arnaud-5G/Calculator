@@ -16,5 +16,5 @@ public abstract class Calculator {
     /***
      * The {@code calculate()} method is used to calculate.
      */
-    public abstract void calculate();
+    public abstract String calculate();
 }

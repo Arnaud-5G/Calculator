@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
  * Used to construct the {@code Calculator} class and to stop illegal characters.
  */
 public class Expression {
-    private final String _equation;
+    private String _equation;
     private Mode _mode;
 
     /***
@@ -50,10 +50,12 @@ public class Expression {
 
     private void verifyExpression(Mode mode){
         if(mode == Mode.ARITHMETIC && _mode != Mode.ARITHMETIC){
-            if(Pattern.compile("[^0-9\\(\\)*/+-\\.]").matcher(this._equation).find(0)) throw new UnsupportedOperationException();
+            if(Pattern.compile("[^0-9\\(\\)\\^?*/+-\\.]").matcher(this._equation).find(0)) throw new UnsupportedOperationException();
+            this._equation = this._equation.replaceAll("([-]?(?=\\.[0-9]|[0-9])(?:[0-9]+)?(?:\\.?[0-9]*))(?:[Ee]([-]?[0-9]+))?", "\"$1\"");
+            this._equation = this._equation.replaceAll("\"\"", "\"+\"");
         }
         else if(mode == Mode.ALGEBRAIC && _mode != Mode.ALGEBRAIC){
-            if(Pattern.compile("[^0-9a-zA-Z\\(\\)*/+-]").matcher(this._equation).find(0)) throw new UnsupportedOperationException();
+            if(Pattern.compile("[^0-9a-zA-Z\\(\\)\\^?*/+-\\.]").matcher(this._equation).find(0)) throw new UnsupportedOperationException();
         }
     }
 }

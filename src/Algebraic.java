@@ -18,7 +18,7 @@ public class Algebraic extends Arithmetic{
     /***
      * The {@code calculate()} method is used to calculate.
      */
-    public void calculate(){
-
+    public String calculate(){
+        return null;
     }
 }
