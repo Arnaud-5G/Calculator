@@ -39,20 +39,21 @@ public class Expression {
     /***
      * Sets the {@code _mode} variable.
      * <p>
-     * Calls the {@code verifyExpression()} method.
+     * Calls the {@code simplifyExpression()} method.
      * 
      * @param mode
      */
     public void setMode(Mode mode){
-        verifyExpression(mode);
+        simplifyExpression(mode);
         this._mode = mode;
     }
 
-    private void verifyExpression(Mode mode){
+    private void simplifyExpression(Mode mode){
         if(mode == Mode.ARITHMETIC && _mode != Mode.ARITHMETIC){
             if(Pattern.compile("[^0-9\\(\\)\\^?*/+-\\.]").matcher(this._equation).find(0)) throw new UnsupportedOperationException();
-            this._equation = this._equation.replaceAll("([-]?(?=\\.[0-9]|[0-9])(?:[0-9]+)?(?:\\.?[0-9]*))(?:[Ee]([-]?[0-9]+))?", "\"$1\"");
-            this._equation = this._equation.replaceAll("\"\"", "\"+\"");
+            this._equation = this._equation
+            .replaceAll("([-]?(?=\\.[0-9]|[0-9])(?:[0-9]+)?(?:\\.?[0-9]*))(?:[Ee]([-]?[0-9]+))?", "\"$1\"")
+            .replaceAll("\"\"", "\"+\"");
         }
         else if(mode == Mode.ALGEBRAIC && _mode != Mode.ALGEBRAIC){
             if(Pattern.compile("[^0-9a-zA-Z\\(\\)\\^?*/+-\\.]").matcher(this._equation).find(0)) throw new UnsupportedOperationException();

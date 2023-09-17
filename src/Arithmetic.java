@@ -26,14 +26,21 @@ public class Arithmetic extends Calculator {
         String expression = _expression.getEquation();
 
         // calls getPriorities()
-        return getPriorities(expression);
+        return getPriorities(expression).replaceAll("\"", "");
     }
 
     private String getPriorities(String expression){
         System.out.println(expression.replaceAll("\"", ""));
 
         // checks for parenteses
-        while(Pattern.compile("[\\(]").matcher(expression).find()){ /* Add logic here */ System.out.println(expression); }
+        while(Pattern.compile("\\((.*)\\)").matcher(expression).find()){
+            // replace parenteses content
+            expression = expression.replaceFirst(
+            Pattern.quote(expression.substring(expression.split("\\([^)]+\\)+", 2)[0].length(), expression.length() - expression.split("\\([^)]+\\)+", 2)[1].length())), 
+            // calls getPriorities() which will do a recursion if there are still parenteses
+            getPriorities(
+            expression.substring(expression.split("\\([^)]+\\)+", 2)[0].length()+1, expression.length() - expression.split("\\([^)]+\\)+", 2)[1].length()-1)));
+        }
 
         // checks for operators
         while(Pattern.compile("[\\^?]").matcher(expression).find()){ expression = operations(expression, "\\^|\\?"); System.out.println(expression); }
@@ -41,7 +48,7 @@ public class Arithmetic extends Calculator {
         while(Pattern.compile("[+-]").matcher(expression).find()){ expression = operations(expression, "\\+|-"); System.out.println(expression); }
         
         // returns the expression
-        return expression.replaceAll("\"", "");
+        return expression;
     }
     
     private String operations(String expression, String operators){
@@ -61,7 +68,7 @@ public class Arithmetic extends Calculator {
         // makes the appropriate operation
         result = switch(expression.charAt(operation[0].length())){
             case '^' -> Math.pow(num1, num2);
-            case '?' -> Math.pow(num1, 1/num2);
+            case '?' -> (num1 == 2 ? Math.sqrt(num2) : (num1 == 3 ? Math.cbrt(num2) : Math.pow(num2, 1/num1)));
             case '*' -> num1 * num2;
             case '/' -> num1 / num2;
             case '+' -> num1 + num2;
