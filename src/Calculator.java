@@ -6,10 +6,10 @@ public abstract class Calculator {
 
     /***
      * The constructor for the {@code Calculator} class.
-     * 
-     * @param expression
+     *
+     * @param expression description
      */
-    Calculator(Expression expression){
+    Calculator(Expression expression) {
         this._expression = expression;
     }
 
