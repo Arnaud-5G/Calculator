@@ -13,26 +13,26 @@ public class Expression {
      * {@code ARITHMETIC}, 
      * {@code ALGEBRAIC}
      */
-    public static enum Mode{
+    public static enum Mode {
         ARITHMETIC,
         ALGEBRAIC
     }
 
     /***
      * The constructor for the {@code Expression} class.
-     * 
-     * @param expression
+     *
+     * @param expression description
      */
-    Expression(String expression){
+    Expression(String expression) {
         _expression = expression;
     }
 
     /***
      * Returns the {@code _expression} variable.
-     * 
+     *
      * @return String
      */
-    public String getExpression(){
+    public String getExpression() {
         return _expression;
     }
 
@@ -40,33 +40,35 @@ public class Expression {
      * Sets the {@code _mode} variable.
      * <p>
      * Calls the {@code simplifyExpression()} method.
-     * 
-     * @param mode
+     *
+     * @param mode description
      */
-    public void setMode(Mode mode){
-        if(this._mode == null){
+    public void setMode(Mode mode) {
+        if (this._mode == null) {
             simplifyExpression(mode);
             this._mode = mode;
         }
     }
 
-    private void simplifyExpression(Mode mode){
+    private void simplifyExpression(Mode mode) {
         // verifies if any illegal characters are inserted according to the mode if there are throw UnsupportedOperationException()
-        switch(mode){
-            case ARITHMETIC : 
-                if(Pattern.compile("[^0-9\\(\\)\\^?*/%+-\\.\\\"]").matcher(this._expression).find(0)) throw new UnsupportedOperationException();
-            case ALGEBRAIC :
-                if(Pattern.compile("[^0-9a-zA-Z\\(\\)\\^?*/%+-\\.\\\"]").matcher(this._expression).find(0)) throw new UnsupportedOperationException();
+        switch (mode) {
+            case ARITHMETIC:
+                if (Pattern.compile("[^0-9()^?*/%+-.\"]").matcher(this._expression).find(0))
+                    throw new UnsupportedOperationException();
+            case ALGEBRAIC:
+                if (Pattern.compile("[^0-9a-zA-Z()^?*/%+-.\"]").matcher(this._expression).find(0))
+                    throw new UnsupportedOperationException();
         }
 
         // check if each number is surrounded by double quotes if not add them
         this._expression = this._expression.indexOf('"') != -1 ? this._expression : addDoubleQuotes(this._expression);
     }
 
-    private String addDoubleQuotes(String expression){
+    private String addDoubleQuotes(String expression) {
         return this._expression = this._expression
             // add double quotes around each number for negative number compatability
-            .replaceAll("([-]?(?=\\.[0-9]|[0-9])(?:[0-9]+)?(?:\\.?[0-9]*))(?:[Ee]([-]?[0-9]+))?", "\"$1\"")
+            .replaceAll("(-?(?=\\.[0-9]|[0-9])(?:[0-9]+)?\\.?[0-9]*)(?:[Ee](-?[0-9]+))?", "\"$1\"")
             // if two double quotes are touching each other add an addition
             .replaceAll("\"\"", "\"+\"");
     }
