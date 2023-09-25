@@ -1,3 +1,5 @@
+package Calculator;
+
 /***
  * The base of all {@code Calculator} subclasses.
  */

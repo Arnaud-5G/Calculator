@@ -1,3 +1,5 @@
+package Calculator;
+
 import java.util.regex.Pattern;
 
 /***
@@ -23,7 +25,7 @@ public class Expression {
      *
      * @param expression description
      */
-    Expression(String expression) {
+    public Expression(String expression) {
         _expression = expression;
     }
 

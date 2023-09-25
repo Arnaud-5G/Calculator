@@ -1,3 +1,5 @@
+package Calculator;
+
 import java.util.regex.Pattern;
 
 /***
@@ -12,7 +14,7 @@ public class Arithmetic extends Calculator {
      *
      * @param expression description
      */
-    Arithmetic(Expression expression) {
+    public Arithmetic(Expression expression) {
         super(expression);
         // sets the expression mode to ARITHMETIC
         _expression.setMode(Expression.Mode.ARITHMETIC);

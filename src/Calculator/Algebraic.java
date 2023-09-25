@@ -1,3 +1,5 @@
+package Calculator;
+
 /***
  * Used to create an {@code Algebraic Calculator}.
  */
@@ -10,7 +12,7 @@ public class Algebraic extends Arithmetic {
      *
      * @param expression description
      */
-    Algebraic(Expression expression) {
+    public Algebraic(Expression expression) {
         super(expression);
         _expression.setMode(Expression.Mode.ALGEBRAIC);
     }
