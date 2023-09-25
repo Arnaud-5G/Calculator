@@ -26,7 +26,7 @@ public class Arithmetic extends Calculator {
         String expression = _expression.getExpression();
 
         // calls getPriorities()
-        return getPriorities("result: " + expression).replaceAll("\"", "");
+        return getPriorities(expression).replaceAll("\"", "");
     }
 
     private String getPriorities(String expression) {
@@ -50,9 +50,7 @@ public class Arithmetic extends Calculator {
     }
 
     private String operations(String expression, String operators) {
-        // instantiates the vars
         String[] operation;
-
         double num1, num2, result;
 
         // splits the expression

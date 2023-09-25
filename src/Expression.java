@@ -45,8 +45,8 @@ public class Expression {
      */
     public void setMode(Mode mode) {
         if (this._mode == null) {
-            simplifyExpression(mode);
             this._mode = mode;
+            simplifyExpression(mode);
         }
     }
 
@@ -70,6 +70,12 @@ public class Expression {
             // add double quotes around each number for negative number compatability
             .replaceAll("(-?(?=\\.[0-9]|[0-9])(?:[0-9]+)?\\.?[0-9]*)(?:[Ee](-?[0-9]+))?", "\"$1\"")
             // if two double quotes are touching each other add an addition
-            .replaceAll("\"\"", "\"+\"");
+            .replaceAll("\"\"", "\"+\"")
+            // if there is no operator between a parentheses and a number consider it as juxtaposition
+            .replaceAll("\"(-?(?=\\.[0-9]|[0-9])(?:[0-9]+)?\\.?[0-9]*)(?:[Ee](-?[0-9]+))?\"(\\([^)]+\\))+", "(\"$1\"*$3)")
+            .replaceAll("(\\([^)]+\\))+\"(-?(?=\\.[0-9]|[0-9])(?:[0-9]+)?\\.?[0-9]*)(?:[Ee](-?[0-9]+)\")?", "($1*\"$3\")")
+            // if there is no operator between two parentheses consider it as juxtaposition
+            .replaceAll("((?:\\([^)]+\\))+(?:\\([^)]+\\))+)", "($1)")
+            .replaceAll("\\)\\(", ")*(");
     }
 }
